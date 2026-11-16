@@ -1,0 +1,4 @@
+lean/.lake/
+impl/node_modules/
+impl/dist/
+.DS_Store

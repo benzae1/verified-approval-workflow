@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      # Builds all proofs, the #guard checks and the trace runner.
+      - name: Build the Lean proofs
+        uses: leanprover/lean-action@v1
+        with:
+          lake-package-directory: lean
+          use-mathlib-cache: false
+          test: false
+          lint: false
+
+      - name: Check that no proof uses sorry, native_decide or extra axioms
+        run: scripts/check-axioms.sh
+
+      # Implementation
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: impl/package-lock.json
+
+      - name: Install dependencies
+        working-directory: impl
+        run: npm ci
+
+      - name: Typecheck
+        working-directory: impl
+        run: npm run typecheck
+
+      - name: Validate policies against the schema
+        working-directory: impl
+        run: npm run validate
+
+      - name: Unit tests
+        working-directory: impl
+        run: npm run test:unit
+
+      - name: Differential test, 10,000 traces per guard
+        working-directory: impl
+        run: npm run test:diff
+
+      - name: Planted bugs must each be caught by the differential test
+        working-directory: impl
+        run: npm run test:mutants
