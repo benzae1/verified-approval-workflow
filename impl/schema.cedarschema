@@ -1,0 +1,14 @@
+// Entity and action types of the approval workflow.
+
+entity Group;
+entity User in [Group];
+entity Queue;
+entity Request = {
+  requester: User,
+  status: String,
+};
+
+action createRequest appliesTo { principal: [User], resource: [Queue] };
+action editRequest   appliesTo { principal: [User], resource: [Request] };
+action approve, deny appliesTo { principal: [User], resource: [Request] };
+action delegate      appliesTo { principal: [User], resource: [User] };

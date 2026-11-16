@@ -62,7 +62,7 @@ partial def loop (guard : Guard) (stdin stdout : IO.FS.Stream) : IO Unit := do
   if line.isEmpty then return
   if !line.trimAscii.isEmpty then
     match runTrace guard line with
-    | .ok j    => stdout.putStrLn j.compress
+    | .ok j    => do stdout.putStrLn j.compress; stdout.flush
     | .error e => throw <| IO.userError s!"bad trace: {e}"
   loop guard stdin stdout
 
