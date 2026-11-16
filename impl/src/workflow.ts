@@ -4,9 +4,9 @@ import { toEntities, toRequest } from './entities.ts';
 import type { Mutant } from './mutants.ts';
 
 /**
- * The approval workflow, as a pure library. One function, `step`, mirroring
- * `step` in lean/Workflow/Model.lean: authorization is delegated to the Cedar
- * policy engine, lifecycle checks are done here.
+ * The approval workflow as a library without I/O. Its one function, `step`,
+ * mirrors `step` in lean/Workflow/Model.lean. The Cedar policy engine decides
+ * authorization, and this file does the lifecycle checks.
  */
 
 export type Status = 'Requested' | 'Approved' | 'Denied';
@@ -27,8 +27,8 @@ export interface State {
 }
 
 /**
- * Actions arrive as untrusted input, e.g. a parsed request body. An `edit`
- * may therefore carry fields beyond the one it is allowed to change.
+ * Actions are untrusted input, such as a parsed request body, so an `edit`
+ * may carry fields other than the one it is allowed to change.
  */
 export type Action =
   | { action: 'create'; justification: string }
@@ -70,8 +70,8 @@ export function loadPolicies(): Record<string, string> {
 let instances = 0;
 
 /**
- * Creates the workflow. `mutant` switches on one planted bug and is only used
- * by the tests.
+ * Creates the workflow. `mutant` switches on one planted bug. Only the tests
+ * pass it.
  */
 export function createWorkflow(mutant?: Mutant): Workflow {
   const policies = loadPolicies();

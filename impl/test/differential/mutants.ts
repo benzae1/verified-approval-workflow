@@ -66,16 +66,16 @@ for (const mutant of Object.keys(MUTANTS) as Mutant[]) {
 
   rows.push(
     `| ${mutant} | ${MUTANTS[mutant]} | ` +
-      (failingUnit.length > 0 ? `caught (${failingUnit.length} of 10 tests fail)` : '**missed**') +
+      (failingUnit.length > 0 ? `caught (${failingUnit.length} of 10 tests fail)` : 'missed') +
       ' | ' +
       (caught
         ? `caught in ${seeds} of ${seeds} runs`
-        : `**missed** in ${seeds - tracesNeeded.length} of ${seeds} runs of ${runs} traces`) +
+        : `missed in ${seeds - tracesNeeded.length} of ${seeds} runs of ${runs} traces`) +
       ` | ${tracesNeeded.length > 0 ? `${median(tracesNeeded)} (${Math.min(...tracesNeeded)} to ${Math.max(...tracesNeeded)})` : 'n/a'} |`,
   );
   if (example?.counterexample) {
     examples.push(
-      `**${mutant}**, shrunk counterexample:\n\n\`\`\`json\n${JSON.stringify(example.counterexample)}\n\`\`\`\n\n` +
+      `${mutant}, shrunk counterexample:\n\n\`\`\`json\n${JSON.stringify(example.counterexample)}\n\`\`\`\n\n` +
         `\`\`\`\n${example.mismatch}\n\`\`\`` +
         (failingUnit.length > 0 ? `\n\nFailing unit tests: ${failingUnit.map((n) => `"${n}"`).join(', ')}.` : ''),
     );

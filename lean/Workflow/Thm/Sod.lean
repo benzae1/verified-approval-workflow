@@ -3,9 +3,9 @@ import Workflow.Thm.Step
 /-!
 # C3: segregation of duties, for any guard that refuses self-approval
 
-The invariant proof is done once, for an arbitrary guard with the property
-`NoSelfApproval`. Stage A (`SodPlain.lean`) and stage B (`SodPolicy.lean`) each
-only have to show that their guard has that property.
+The invariant is proven once, for an arbitrary guard with the property
+`NoSelfApproval`. `SodPlain.lean` and `SodPolicy.lean` each show that their
+guard has that property.
 -/
 
 namespace Workflow

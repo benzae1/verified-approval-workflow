@@ -5,12 +5,12 @@ A request is created by a user, may be edited by its requester while it is
 still open, and is finally approved or denied by an approver. Approvers may
 delegate their approval right to any user.
 
-*Who may act* is decided by a `Guard`, which is a parameter of `step`.
-*When an action is legal* (is the request still open?) is decided by `step`
-itself. Stage A instantiates the guard with a plain Lean function
-(`Workflow/PlainGuard.lean`), stage B with Cedar's formal semantics
-(`Workflow/Bridge.lean`). The theorems in `Workflow/Thm` are stated for a
-guard parameter, so both stages share one model and one invariant proof.
+A `Guard`, which is a parameter of `step`, decides who may act. `step` itself
+decides when an action is legal, that is, whether the request is still open.
+Two guards are defined: `plainGuard` in `Workflow/PlainGuard.lean` is a plain
+Lean function, and `cedarGuard` in `Workflow/Bridge.lean` asks Cedar's formal
+semantics. The theorems in `Workflow/Thm` take the guard as a parameter, so
+both guards share one model and one invariant proof.
 -/
 
 namespace Workflow
@@ -56,11 +56,11 @@ inductive Action where
   deriving DecidableEq, Repr, Inhabited
 
 /-- A guard decides whether `actor` is authorized to perform an action in a
-given state. It says *who* may act, never *when*. -/
+given state. Lifecycle checks are left to `step`. -/
 abbrev Guard := State → User → Action → Bool
 
 /-- Replace request `id` by `f` of itself, provided it exists and is still
-open. This is the only way an existing request is ever modified. -/
+open. Every change to an existing request goes through this function. -/
 def updateOpen (s : State) (id : ReqId) (f : Req → Req) : Option State :=
   match s.requests[id]? with
   | some r =>

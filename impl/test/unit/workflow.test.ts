@@ -1,6 +1,6 @@
-// Ordinary example-based unit tests, of the kind one writes while building the
-// feature. They were written before the differential test and before the
-// planted bugs were run, and are deliberately not tuned to catch them.
+// Example-based unit tests of the kind written while building a feature. They
+// were written before the differential test existed and before the planted
+// bugs were run, and they were not changed to catch those bugs.
 //
 // Set WORKFLOW_MUTANT=M1..M5 to run them against a planted bug.
 import assert from 'node:assert/strict';

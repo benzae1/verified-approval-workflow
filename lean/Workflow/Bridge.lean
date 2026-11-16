@@ -2,15 +2,15 @@ import Cedar.Spec
 import Workflow.Policies
 
 /-!
-# Stage B: the bridge from the workflow model to the policy engine
+# From the workflow model to the policy engine
 
 `toEntities` and `toRequest` translate a model state and an action into the
 inputs of Cedar's authorizer. `cedarGuard` is the guard that asks Cedar.
 
-This translation is where an application can silently defeat its own policies:
-if `requestEntity` left out the `requester` attribute, policy P4 would raise an
-error on every evaluation, Cedar would skip it, and self-approval would be
-allowed. `Workflow/Thm/SodPolicy.lean` proves that this cannot happen here.
+An error in this translation can disable a policy. If `requestEntity` left out
+the `requester` attribute, policy P4 would raise an error on every evaluation,
+Cedar would skip it, and self-approval would be allowed.
+`Workflow/Thm/SodPolicy.lean` proves that P4 is evaluated without error.
 -/
 
 namespace Workflow
@@ -71,7 +71,7 @@ def toRequest (actor : User) (a : Action) : Request :=
 def cedarGuardWith (policies : Policies) : Guard := fun s actor a =>
   (isAuthorized (toRequest actor a) (toEntities s) policies).decision == .allow
 
-/-- The stage B guard: Cedar's authorizer with the workflow's five policies. -/
+/-- Cedar's authorizer with the workflow's five policies. -/
 def cedarGuard : Guard := cedarGuardWith policies
 
 end Workflow

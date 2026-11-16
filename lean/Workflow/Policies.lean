@@ -5,9 +5,9 @@ import Workflow.Model
 # The five policies, as Cedar syntax trees
 
 Cedar's Lean specification does not parse policy text, so the policies are
-written here directly as abstract syntax. The same policies exist a second time
-as text in `impl/policies.cedar`; each definition below quotes the text it
-mirrors. The differential test is what ties the two together.
+written as abstract syntax. The same policies exist as text in
+`impl/policies.cedar`, and each definition quotes the text it mirrors. The
+differential test checks that the two versions agree.
 -/
 
 namespace Workflow

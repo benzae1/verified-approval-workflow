@@ -1,10 +1,10 @@
 import Workflow.Model
 
 /-!
-# Stage A: a guard written as ordinary Lean conditions
+# A guard written as ordinary Lean conditions
 
-This guard does not depend on any policy engine. It states the authorization
-rules of the workflow directly:
+`plainGuard` uses no policy engine. It states the authorization rules of the
+workflow directly:
 
 * anyone may create a request;
 * only the requester may edit a request;

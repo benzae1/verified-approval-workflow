@@ -1,6 +1,6 @@
-// The differential test: random action sequences are run through the Lean
-// model and through the TypeScript implementation, and every step's decision
-// and resulting state must agree.
+// The differential test runs random action sequences through the Lean model
+// and through the TypeScript implementation. The decision and the resulting
+// state must agree at every step.
 import { type ChildProcessWithoutNullStreams, spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -22,10 +22,10 @@ export interface Trace {
 // Generator
 // ---------------------------------------------------------------------------
 
-// A deliberately small universe. With three users and at most four requests,
-// collisions are the norm: self-approval attempts, delegation to the requester
-// and actions on decided requests occur in most traces. A generator drawing
-// from many users would almost never try to self-approve.
+// The universe is small: three users and at most four requests. Actors and
+// requesters therefore often coincide, so self-approval attempts, delegation
+// to a requester and actions on decided requests are frequent. A generator
+// drawing from many users would rarely try to self-approve.
 export const USERS = ['alice', 'bob', 'carol'];
 export const MAX_REQUESTS = 4;
 export const MAX_STEPS = 20;
@@ -42,8 +42,8 @@ const action: fc.Arbitrary<Action> = fc.oneof(
   { weight: 3, arbitrary: fc.record({ action: fc.constant('create' as const), justification: text }) },
   { weight: 2, arbitrary: fc.record({ action: fc.constant('edit' as const), id, justification: text }) },
   {
-    // Input is untrusted: an edit may carry a field it has no business setting.
-    // The model has no such field, so a correct implementation must ignore it.
+    // An edit with a `requester` field in its input. The model has no such
+    // field, so a correct implementation ignores it.
     weight: 1,
     arbitrary: fc.record({ action: fc.constant('edit' as const), id, justification: text, requester: user }),
   },
@@ -55,8 +55,8 @@ const action: fc.Arbitrary<Action> = fc.oneof(
 export const trace: fc.Arbitrary<Trace> = fc
   .record({
     approvers: fc.uniqueArray(user, { maxLength: USERS.length, size: 'max' }),
-    // `size: 'max'` makes trace lengths uniform up to MAX_STEPS; the default
-    // strongly favours very short traces, in which little can happen.
+    // `size: 'max'` makes trace lengths uniform up to MAX_STEPS. The default
+    // favours short traces, in which few requests get decided.
     steps: fc.array(
       fc.tuple(user, action).map(([actor, a]) => ({ actor, ...a })),
       { maxLength: MAX_STEPS, size: 'max' },

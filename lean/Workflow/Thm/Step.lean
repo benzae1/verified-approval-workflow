@@ -5,7 +5,7 @@ import Workflow.Model
 
 Two lemmas describe the effect of one authorized action on the list of
 requests: one looking forward from the old state, one looking back from the
-new state. All control proofs are built on these two.
+new state. The proofs of C1, C2 and C3 use these two lemmas.
 -/
 
 namespace Workflow

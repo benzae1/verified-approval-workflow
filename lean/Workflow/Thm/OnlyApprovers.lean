@@ -9,11 +9,10 @@ import Workflow.Thm.SodPolicy
 
 Whoever approves or denies a request holds approval rights at that moment.
 
-This needs the opposite direction of reasoning from C3. There, one satisfied
-forbid policy was enough. Here we use Cedar's `allowed_only_if_explicitly_permitted`
-to obtain *some* satisfied permit policy, and then show that for an approve or
-deny request it can only be P3, and that P3 is only satisfied for members of
-the approver group.
+C3 needed one satisfied forbid policy. C4 reasons in the other direction.
+Cedar's `allowed_only_if_explicitly_permitted` yields some satisfied permit
+policy. For an approve or deny request that policy can only be P3, and P3 is
+satisfied only for members of the approver group.
 -/
 
 namespace Workflow
@@ -90,7 +89,7 @@ theorem cedarGuard_decide_approver (s : State) (actor : User) (a : Action)
       createAction, editAction, approveAction, denyAction, delegateAction]
     split <;> simp_all
 
-/-- **C4.** With Cedar as the guard, an approve or deny step only takes effect
+/-- C4. With Cedar as the guard, an approve or deny step only takes effect
 if the actor holds approval rights in the state where the step is taken. -/
 theorem only_approvers_decide (s : State) (actor : User) (a : Action)
     (ha : (∃ id, a = .approve id) ∨ (∃ id, a = .deny id))

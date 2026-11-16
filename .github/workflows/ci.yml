@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Proofs: build everything, including the #guard checks and the runner.
+      # Builds all proofs, the #guard checks and the trace runner.
       - name: Build the Lean proofs
         uses: leanprover/lean-action@v1
         with:

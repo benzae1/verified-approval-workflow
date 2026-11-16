@@ -3,8 +3,8 @@ import Workflow.Thm.Step
 /-!
 # C1: decisions are final
 
-Once a request is approved or denied, no action by anyone changes it. This
-holds for every guard: it is a property of the lifecycle, not of authorization.
+Once a request is approved or denied, no action by anyone changes it. This is
+a property of the lifecycle and holds for every guard.
 -/
 
 namespace Workflow
@@ -19,7 +19,7 @@ theorem step_preserves_decided (guard : Guard) (s : State) (actor : User) (a : A
   · obtain ⟨r', hr', _, hsame⟩ := apply_forward h hr
     rw [hr', hsame hd]
 
-/-- **C1.** Once a request is approved or denied, it stays exactly as it is in
+/-- C1. Once a request is approved or denied, it stays exactly as it is in
 every later state: same status, same decider, same requester, same text. -/
 theorem decisions_are_final {guard : Guard} {s s' : State} (h : Reaches guard s s')
     {id : ReqId} {r : Req}

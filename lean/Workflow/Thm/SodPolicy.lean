@@ -5,26 +5,25 @@ import Workflow.Bridge
 import Workflow.Thm.Sod
 
 /-!
-# C3, stage B: segregation of duties with Cedar as the guard
+# C3: segregation of duties with Cedar as the guard
 
-The proof is split at the boundary that Cedar's own proofs provide.
+The proof has four parts.
 
-1. **Bridge lemma (`forbidSelfApproval_satisfied`, ours).** For every state,
-   every request in it, and its requester: policy P4 is satisfied for the
-   approve request, evaluated against the entities built by `toEntities`.
-2. **The engine's theorem (`Cedar.Thm.forbid_trumps_permit`, theirs).** If some
+1. The bridge lemma, `forbidSelfApproval_satisfied`, is proven here. For every
+   state, every request in it, and its requester, policy P4 is satisfied for
+   the approve request, evaluated against the entities built by `toEntities`.
+2. `Cedar.Thm.forbid_trumps_permit` comes from Cedar's own proofs. If some
    forbid policy is satisfied, the decision is deny.
-3. **Guard lemma (`cedarGuard_noSelfApproval`).** From 1 and 2.
-4. **Invariant.** Proven once for all guards in `Workflow/Thm/Sod.lean`.
+3. The guard lemma, `cedarGuard_noSelfApproval`, follows from 1 and 2.
+4. The invariant is proven for all guards in `Workflow/Thm/Sod.lean`.
 
-The bridge lemma never mentions the approver group. That is why delegation
-cannot weaken it: making the requester an approver changes nothing P4 looks at.
+The bridge lemma does not mention the approver group, so delegation cannot
+weaken it: making the requester an approver changes nothing that P4 reads.
 
-The bridge lemma is also where the *skipped-policy pitfall* is ruled out. If
-evaluating a forbid policy raises an error, Cedar skips the policy, and a
-skipped forbid denies nothing. P4 reads `resource.requester`; the lemma holds
-only because `requestEntity` always sets that attribute and `toEntities` always
-includes the request.
+The bridge lemma also excludes a skipped policy. If evaluating a forbid policy
+raises an error, Cedar skips the policy, and a skipped forbid denies nothing.
+P4 reads `resource.requester`. The lemma holds because `requestEntity` always
+sets that attribute and `toEntities` always includes the request.
 -/
 
 namespace Workflow
@@ -92,9 +91,9 @@ macro "eval_policy" "[" ts:Lean.Parser.Tactic.simpLemma,* "]" : tactic =>
       resourceRequesterIsPrincipal, Result.as, apply₁, apply₂, getAttr, attrsOf,
       Entities.attrs, Map.findOrErr, Value.asBool, Coe.coe, $ts,*])
 
-/-- **Bridge lemma.** Policy P4 is satisfied whenever the requester of an
-existing request asks to approve it. In particular its evaluation does not
-raise an error, so Cedar does not skip it. -/
+/-- The bridge lemma. Policy P4 is satisfied whenever the requester of an
+existing request asks to approve it. Its evaluation therefore raises no error,
+and Cedar does not skip it. -/
 theorem forbidSelfApproval_satisfied (s : State) (id : Nat) (r : Req)
     (hr : s.requests[id]? = some r) :
     satisfied forbidSelfApproval (toRequest r.requester (.approve id)) (toEntities s) = true := by
@@ -120,7 +119,7 @@ theorem cedarGuard_noSelfApproval : cedarGuard.NoSelfApproval :=
 
 /-! ### The theorem -/
 
-/-- **C3, stage B (headline).** With Cedar's authorizer and the workflow's five
+/-- C3 for the Cedar guard. With Cedar's authorizer and the workflow's five
 policies as the guard, in every reachable state an approved request was
 approved by someone other than its requester, whatever delegations took
 place. -/

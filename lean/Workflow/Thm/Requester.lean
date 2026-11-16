@@ -19,7 +19,7 @@ theorem step_preserves_requester (guard : Guard) (s : State) (actor : User) (a :
   · obtain ⟨r', hr', hreq, _⟩ := apply_forward h hr
     exact ⟨r', hr', hreq⟩
 
-/-- **C2.** A request that exists keeps existing, under the same identifier and
+/-- C2. A request that exists keeps existing, under the same identifier and
 with the same requester, in every later state. -/
 theorem requester_is_immutable {guard : Guard} {s s' : State} (h : Reaches guard s s')
     {id : ReqId} {r : Req} (hr : s.requests[id]? = some r) :

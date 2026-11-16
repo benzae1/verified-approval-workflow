@@ -12,7 +12,7 @@ action took effect and the full state afterwards.
       | lake exe runner
 
 `--guard cedar` (the default) uses Cedar's formal semantics as the guard,
-`--guard plain` the stage A guard.
+`--guard plain` uses `plainGuard`.
 -/
 
 open Lean (Json)

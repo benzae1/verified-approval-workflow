@@ -1,9 +1,9 @@
 // The authorization policies of the approval workflow.
 //
 // The same five policies exist as syntax trees in lean/Workflow/Policies.lean,
-// where the proofs are about them. The differential test is what ties the two
-// versions together. Lifecycle rules (is the request still open?) are not
-// here: policies say who may act, the workflow says when.
+// which the proofs use. The differential test checks that the two versions
+// agree. The policies say who may act. Whether a request is still open is
+// checked by the workflow code.
 
 // P1: any user may create a request
 @id("P1")

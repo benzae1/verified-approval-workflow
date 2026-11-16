@@ -4,10 +4,10 @@ import Workflow.PlainGuard
 /-!
 # Concrete checks
 
-Small executable checks of the policies and the model, evaluated by Lean when
-this file is built. `#guard` fails the build if its condition is false. They
-are no substitute for the theorems; they are the sanity checks one writes
-before attempting a proof, and they document the intended behaviour.
+Executable checks of the policies and the model on small concrete states. Lean
+evaluates them when this file is built, and `#guard` fails the build if its
+condition is false. They cover single cases, where the theorems cover all, and
+they show the intended behaviour by example.
 -/
 
 namespace Workflow.Checks
@@ -51,7 +51,7 @@ def s₂ : State := (step cedarGuard s₁ "bob" (.delegate "alice")).1
 #guard cedarGuard s₁ "bob" (.delegate "carol")
 #guard !cedarGuard s₁ "alice" (.delegate "carol")
 
-/-! ### The delegation scenario from the README -/
+/-! ### The delegation scenario -/
 
 def delegationTrace : List (User × Action) := [
   ("alice", .create "db migration"),   -- alice asks

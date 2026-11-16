@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Fails if any headline theorem depends on an axiom other than Lean's three
+# Fails if one of the main theorems depends on an axiom other than Lean's three
 # standard ones. Catches `sorry` (sorryAx) and `native_decide`
 # (Lean.ofReduceBool, Lean.trustCompiler). Run after `lake build`.
 set -euo pipefail

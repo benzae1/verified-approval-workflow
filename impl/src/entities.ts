@@ -3,10 +3,10 @@ import type { Mutant } from './mutants.ts';
 import type { Action, State } from './workflow.ts';
 
 /**
- * The call into the policy engine: how a workflow state and an action become
- * Cedar entities and a Cedar request. Mirrors `toEntities` and `toRequest` in
- * lean/Workflow/Bridge.lean. The Lean version is covered by the proof; this
- * one is only tested against it.
+ * Builds the policy engine's input: Cedar entities from a workflow state, and
+ * a Cedar request from an action. Mirrors `toEntities` and `toRequest` in
+ * lean/Workflow/Bridge.lean. The proofs cover the Lean version. This version
+ * is tested against it.
  */
 
 type Uid = { type: string; id: string };
