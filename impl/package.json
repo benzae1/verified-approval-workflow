@@ -2,6 +2,7 @@
   "name": "verified-approval-workflow-impl",
   "version": "0.1.0",
   "private": true,
+  "license": "Apache-2.0",
   "description": "Approval workflow on the Cedar policy engine, tested against a Lean model",
   "type": "module",
   "engines": {

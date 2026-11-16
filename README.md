@@ -209,3 +209,8 @@ becomes that every emergency access is reviewed, by someone other than the
 person who used it. Others are delegation with time limits and revocation,
 expiry of granted access, an audit log proven complete, and a single source
 for the policies in place of the two versions kept here.
+
+## Licence
+
+Apache License 2.0, see [LICENSE](LICENSE). Cedar's Lean specification and the
+Cedar engine, which this repository depends on, use the same licence.
